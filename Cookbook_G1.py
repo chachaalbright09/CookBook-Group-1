@@ -1,8 +1,9 @@
 # Digital Cookbook
+
 listRecipes = []
 nLen = len(listRecipes)
 
-#Part A) Addinging Recipes/ Editing/ Deleting
+#Part A) Adding Recipes/ Editing/ Deleting
 def add_recipe(a_New):
     listRecipes.append(a_New)
 
@@ -21,15 +22,13 @@ def list_all_recipes():
 # Part B) Ingredient/ Cusine Searching
 
 
-
-
+# Part C) Cooking Assistant Features
 
 
 # Part D) CLI & File Handling
-
 def user_menu():
     while True:
-        print("\n === Recipe Book Menu ===")
+        print("\n === Digital Cookbook Menu ===")
         print("1. Add Recipe")
         print("2. Edit Recipe")
         print("3. Delete Recipe")
@@ -49,7 +48,7 @@ def user_menu():
         print("14. Load Recipes from File")
         print("0. Exit")
             
-        choice = input("\nEnter your choice (0-14): ")
+        choice = input("\nEnter your choice: ")
         handle_choice(choice)
 
         
@@ -122,14 +121,13 @@ def format_recipe_display():
             cuisine
             meal type
             prep time
-            vegetarian yes / no
+            vegetarian: yes / no
             ingredients
             instructions
             ...
         """
 
 # Run app
-
 user_menu()
 
 
