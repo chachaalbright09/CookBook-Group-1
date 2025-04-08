@@ -49,7 +49,7 @@ def user_menu():
         print("14. Load Recipes from File")
         print("0. Exit")
             
-        choice = input("\nEnter your choice (1-4): ")
+        choice = input("\nEnter your choice (0-14): ")
         handle_choice(choice)
 
         
