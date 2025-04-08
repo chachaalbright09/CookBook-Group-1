@@ -92,12 +92,10 @@ def handle_choice(choice):
         #    pass
         
         elif choice == "13":
-            pass
-            #save_recipes_to_file()
+            save_recipes_to_file()
         
         elif choice == "14":
-            pass
-            #load_recipes_from_file()
+            load_recipes_from_file()
 
         elif choice == "0":
             print("Exiting program.")
@@ -114,18 +112,18 @@ def load_recipes_from_file():
 
 def format_recipe_display():
     pass
-
-def format_recipe_display():
-    """print:
+    """
+    plan: 
+        print:
             name
             cuisine
             meal type
             prep time
-            vegetarian: yes / no
+            vegetarian: yes/no
             ingredients
             instructions
             ...
-        """
+    """
 
 # Run app
 user_menu()
