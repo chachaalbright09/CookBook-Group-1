@@ -28,7 +28,7 @@ def find_recipe_by_name():
                 return recipe
     return None
 
-def find_recipe_by_ingredient_simplest():
+def find_recipe_by_ingredient():
     search = input("Enter ingredient: ")
     for recipe in listRecipes:
         if "ingredients" in recipe:
