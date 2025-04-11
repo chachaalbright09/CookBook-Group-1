@@ -20,7 +20,34 @@ def list_all_recipes():
         print("[{i}] {recipe['name']} ({recipe['cuisine']})")
 
 # Part B) Ingredient/ Cusine Searching
+def find_recipe_by_name():
+    recipe_to_find=input("enter the name of the recipe: ")
+    for recipe in listRecipes:
+        if "name" in recipe:
+            if recipe["name"] == recipe_to_find:
+                return recipe
+    return None
 
+def find_recipe_by_ingredient_simplest():
+    search = input("Enter ingredient: ")
+    for recipe in listRecipes:
+        if "ingredients" in recipe:
+            for item in recipe["ingredients"]:
+                if search.lower() in item.lower():
+                    if "name" in recipe:
+                        print(f"Found: {recipe['name']}")
+                    else:
+                        print("Sorry")
+                    return
+    print(f"No recipes with '{search}' found.")
+
+def find_recipe_by_cuisine(search_cuisine):
+    matching_recipes = []
+    search = search_cuisine.lower()
+    for recipe in listRecipes:
+        if "cuisine" in recipe and recipe["cuisine"].lower() == search_lower:
+            matching_recipes.append(recipe)
+    return matching_recipes
 
 # Part C) Cooking Assistant Features
 
