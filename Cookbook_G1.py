@@ -50,8 +50,42 @@ def find_recipe_by_cuisine(search_cuisine):
     return matching_recipes
 
 # Part C) Cooking Assistant Features
+def view_vegetarian_recipes():
+    print("\n== Vegetarian Recipes ==")
+    bFound = False
+    for recipe in listRecipes:
+        if recipe["vegetarian"].lower == "yes":
+            print(f"{recipe['name']}")
+            bFound = True
+    if bFound == False:
+        print("No vegetarian recipes found.")
 
+def group_by_meal_tepe():
+    print("\n== Recipes Grouped By Meal Type ==")
+    meal_dict = {}
 
+    for recipe in listRecipes:
+        if "meal type" i  recipe:
+          meal_type = recipe["meal type"]
+        else:
+          meal_type = "Unknown"
+
+        if meal_type in meal_dict
+          meal_dict[meal_type].append(recipe{"name"})
+        else:
+          meal_dict[meal_type] = [recipe["name"]]
+    
+    for meal in meal_dict:
+      print(f"\n{meal}:")
+      for meal in meal_dict:
+        print(f"\n{meal}:")
+        for name in meal_dict[meal]:
+          print(f"  - {name} (You might want to try this!)")
+    
+      
+    
+          
+          
 # Part D) CLI & File Handling
 def user_menu():
     while True:
