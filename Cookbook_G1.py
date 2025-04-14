@@ -181,7 +181,7 @@ def handle_choice(choice):
             print("Invalid option, try again.")
 
 def save_recipes_to_file():
-    f = open("recipes.txt", "a")
+    f = open("recipes.txt", "w")
     for recipe in listRecipes:
         f.write(f"Name: {recipe['name']}\n")
         f.write(f"Cuisine: {recipe['cuisine']}\n")
@@ -223,4 +223,5 @@ def load_recipes_from_file():
     print("Recipes loaded from file.")
 
 # Run app
+load_recipes_from_file()
 user_menu()
