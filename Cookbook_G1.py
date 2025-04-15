@@ -16,22 +16,32 @@ def add_recipe():
         "cuisine": cuisine,
         "meal type": meal_type,
         "vegetarian": vegetarian,
-        "ingredients": ingredients
-    }
+        "ingredients": ingredients }
+    
 
     listRecipes.append(new_recipe)
     print(f"New recipe added successfully")
 
 
 def edit_recipe(a_RecipeID, a_Update):
-    for key, value in a_Update.items():
-        listRecipes[a_RecipeID][key] = value
+    if 0 <= a_RecipeID < nLen:
+        for key, value in a_Update.items():
+            listRecipes[a_RecipeID][key] = value
+    else: 
+        print("Not a vaild ID")
 
 def delete_recipe(a_RecipeID):
     if 0 <= a_RecipeID < nLen:
         del listRecipes[a_RecipeID]
+        print(a_RecipeID,"Deleted")
+    else:
+        print("Not a vaild ID")
 
 def list_all_recipes():
+    if not listRecipes:
+        print("Recipe not found.")
+        return
+        
     i = 0
     for recipe in listRecipes:
         print(f"[ID: {i}] Recipe:")
@@ -45,7 +55,7 @@ def list_all_recipes():
         
 # Part B) Ingredient/ Cusine Searching
 def find_recipe_by_name():
-    recipe_to_find=input("enter the name of the recipe: ")
+    recipe_to_find = input("enter the name of the recipe: ")
     for recipe in listRecipes:
         if "name" in recipe:
             if recipe["name"] == recipe_to_find:
@@ -78,7 +88,7 @@ def view_vegetarian_recipes():
     print("\n== Vegetarian Recipes ==")
     bFound = False
     for recipe in listRecipes:
-        if recipe["vegetarian"].lower == "yes":
+        if recipe["vegetarian"].lower() == "yes":
             print(f"{recipe['name']}")
             bFound = True
     if bFound == False:
@@ -121,8 +131,8 @@ def user_menu():
         print("8. View Vegetarian Recipes")
         print("9. Group by Meal Type")
 
-        print("13. Save Recipes to File")
-        print("14. Load Recipes from File")
+        print("10. Save Recipes to File")
+        print("11. Load Recipes from File")
         print("0. Exit")
             
         choice = input("\nEnter your choice: ")
@@ -167,10 +177,10 @@ def handle_choice(choice):
         elif choice == "9":
             group_by_meal_type()
             
-        elif choice == "13":
+        elif choice == "10":
             save_recipes_to_file()
         
-        elif choice == "14":
+        elif choice == "11":
             load_recipes_from_file()
 
         elif choice == "0":
@@ -181,46 +191,48 @@ def handle_choice(choice):
             print("Invalid option, try again.")
 
 def save_recipes_to_file():
-    f = open("recipes.txt", "w")
-    for recipe in listRecipes:
-        f.write(f"Name: {recipe['name']}\n")
-        f.write(f"Cuisine: {recipe['cuisine']}\n")
-        f.write(f"Meal Type: {recipe['meal type']}\n")
-        f.write(f"Vegetarian: {recipe['vegetarian']}\n")
-        f.write(f"Ingredients: {', '.join(recipe['ingredients'])}\n")
-        f.write("\n")
-    f.close()
+    with open("recipes.txt", "w") as f:
+        for recipe in listRecipes:
+            f.write(f"Name: {recipe['name']}\n")
+            f.write(f"Cuisine: {recipe['cuisine']}\n")
+            f.write(f"Meal Type: {recipe['meal type']}\n")
+            f.write(f"Vegetarian: {recipe['vegetarian']}\n")
+            f.write(f"Ingredients: {', '.join(recipe['ingredients'])}\n")
+            f.write("\n")
     print("Recipes saved to file.")
 
 def load_recipes_from_file():
     global listRecipes
     listRecipes = []
+    
+    try:
 
-    f = open("recipes.txt", "r")
-    while True:
-        name = f.readline().strip()
-        if not name:
-            break
+        with open("recipes.txt", "r") as f:
+            while True:
+                name = f.readline().strip()
+                if not name:
+                    break
 
-        cuisine = f.readline().strip()
-        meal_type = f.readline().strip()
-        vegetarian = f.readline().strip()
-        ingredients = f.readline().strip()
-        ingredients_list = ingredients.split(", ")
+                cuisine = f.readline().strip()
+                meal_type = f.readline().strip()
+                vegetarian = f.readline().strip()
+                ingredients = f.readline().strip()
+                ingredients_list = ingredients.split(", ")
 
-        f.readline()
+                f.readline()
 
-        recipe = {
-            "name": name,
-            "cuisine": cuisine,
-            "meal type": meal_type,
-            "vegetarian": vegetarian,
-            "ingredients": ingredients_list,
-        }
-        listRecipes.append(recipe)
+                recipe = {
+                    "name": name,
+                    "cuisine": cuisine,
+                    "meal type": meal_type,
+                    "vegetarian": vegetarian,
+                    "ingredients": ingredients_list,
+                }
+                listRecipes.append(recipe)
 
-    f.close()
-    print("Recipes loaded from file.")
+        print("Recipes loaded from file.")
+    except FileNotFoundError:
+        print("Starting a new/ empty cookbook")
 
 # Run app
 load_recipes_from_file()
