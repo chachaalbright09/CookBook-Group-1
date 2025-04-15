@@ -1,7 +1,6 @@
 # Digital Cookbook
 
 listRecipes = []
-nLen = len(listRecipes)
 
 #Part A) Adding Recipes/ Editing/ Deleting
 def add_recipe():
@@ -24,6 +23,7 @@ def add_recipe():
 
 
 def edit_recipe(a_RecipeID, a_Update):
+    nLen = len(listRecipes)
     if 0 <= a_RecipeID < nLen:
         for key, value in a_Update.items():
             listRecipes[a_RecipeID][key] = value
@@ -31,6 +31,7 @@ def edit_recipe(a_RecipeID, a_Update):
         print("Not a vaild ID")
 
 def delete_recipe(a_RecipeID):
+    nLen = len(listRecipes)
     if 0 <= a_RecipeID < nLen:
         del listRecipes[a_RecipeID]
         print(a_RecipeID,"Deleted")
@@ -39,7 +40,7 @@ def delete_recipe(a_RecipeID):
 
 def list_all_recipes():
     if not listRecipes:
-        print("Recipe not found.")
+        print("No recipe not found.")
         return
         
     i = 0
@@ -55,25 +56,39 @@ def list_all_recipes():
         
 # Part B) Ingredient/ Cusine Searching
 def find_recipe_by_name():
-    recipe_to_find = input("enter the name of the recipe: ")
+    recipe_to_find = input("enter the name of the recipe: ").strip().lower()
+    
     for recipe in listRecipes:
         if "name" in recipe:
-            if recipe["name"] == recipe_to_find:
-                return recipe
-    return None
+            if recipe["name"].lower() == recipe_to_find:
+                print("\nRecipes found: ")
+                print(f"  Name: {recipe['name']}")
+                print(f"  Cuisine: {recipe['cuisine']}")
+                print(f"  Meal Type: {recipe['meal type']}")
+                print(f"  Vegetarian: {recipe['vegetarian']}")
+                print(f"  Ingredients: {', '.join(recipe['ingredients'])}")
+                return
+    print("Recipe not found")
 
 def find_recipe_by_ingredient():
-    search = input("Enter ingredient: ")
+    search = input("Enter ingredient: ").strip().lower()
+    found = False
+    
     for recipe in listRecipes:
         if "ingredients" in recipe:
             for item in recipe["ingredients"]:
-                if search.lower() in item.lower():
+                if search in item.lower():
                     if "name" in recipe:
-                        print(f"Found: {recipe['name']}")
-                    else:
-                        print("Sorry")
-                    return
-    print(f"No recipes with '{search}' found.")
+                        print("\nRecipes found: ")
+                        print(f"  Name: {recipe['name']}")
+                        print(f"  Cuisine: {recipe['cuisine']}")
+                        print(f"  Meal Type: {recipe['meal type']}")
+                        print(f"  Vegetarian: {recipe['vegetarian']}")
+                        print(f"  Ingredients: {', '.join(recipe['ingredients'])}")
+                        found = True
+                        break
+    if not found:
+        print(f"\nNo recipes with '{search}' found.")
 
 def find_recipe_by_cuisine(search_cuisine):
     matching_recipes = []
@@ -168,8 +183,20 @@ def handle_choice(choice):
             find_recipe_by_ingredient()
 
         elif choice == "7":
-            search_cuisine = input("Enter cuisine to search: ")
-            find_recipe_by_cuisine(search_cuisine)
+                search_cuisine = input("Enter cuisine to search: ")
+                matches = find_recipe_by_cuisine(search_cuisine)
+
+                if matches:
+                    print(f"\n== Recipes for '{search_cuisine}' ==")
+                    for recipe in matches:
+                        print(f"\n  Name: {recipe['name']}")
+                        print(f"  Cuisine: {recipe['cuisine']}")
+                        print(f"  Meal Type: {recipe['meal type']}")
+                        print(f"  Vegetarian: {recipe['vegetarian']}")
+                        print(f"  Ingredients: {', '.join(recipe['ingredients'])}")
+                else:
+                    print(f"No recipes found for cuisine '{search_cuisine}'.")
+
         
         elif choice == "8":
             view_vegetarian_recipes()
@@ -204,20 +231,20 @@ def save_recipes_to_file():
 def load_recipes_from_file():
     global listRecipes
     listRecipes = []
-    
-    try:
 
+    try:
         with open("recipes.txt", "r") as f:
             while True:
-                name = f.readline().strip()
-                if not name:
+                name_line = f.readline()
+                if not name_line:
                     break
+                name = name_line.strip().replace("Name: ", "")
 
-                cuisine = f.readline().strip()
-                meal_type = f.readline().strip()
-                vegetarian = f.readline().strip()
-                ingredients = f.readline().strip()
-                ingredients_list = ingredients.split(", ")
+                cuisine = f.readline().strip().replace("Cuisine: ", "")
+                meal_type = f.readline().strip().replace("Meal Type: ", "")
+                vegetarian = f.readline().strip().replace("Vegetarian: ", "")
+                ingredients_line = f.readline().strip().replace("Ingredients: ", "")
+                ingredients_list = ingredients_line.split(", ")
 
                 f.readline()
 
@@ -233,6 +260,7 @@ def load_recipes_from_file():
         print("Recipes loaded from file.")
     except FileNotFoundError:
         print("Starting a new/ empty cookbook")
+
 
 # Run app
 load_recipes_from_file()
